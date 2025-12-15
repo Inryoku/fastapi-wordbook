@@ -29,6 +29,8 @@ def get_db():
 @app.get("/words", response_model=list[schemas.WordRead])
 def read_words(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return crud.get_words(db, skip=skip, limit=limit)
+# if given query is "GET /words?skip=2&limit=2", this function returns words from index 2 to 3 (2 words in total),
+# The = 0 and = 100 are default values for function parameters. Request with NO query parameters will use these default values.
 
 
 @app.post("/words", response_model=schemas.WordRead)
