@@ -38,6 +38,7 @@ def create_word(db: Session, word_in: WordCreate):
         term=word_in.term,
         meaning=word_in.meaning,
         example=word_in.example,
+        part_of_speech=word_in.part_of_speech,
     )
     db.add(db_word)
     db.commit()

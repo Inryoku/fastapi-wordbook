@@ -12,6 +12,7 @@ class WordBase(BaseModel):
     term: str
     meaning: str
     example: Optional[str] = None 
+    part_of_speech: Optional[str] = None
 # WordBase is not used directly for API endpoints but is inherited by the others.
 # 	•	term (str) → required
 # 	•	meaning (str) → required

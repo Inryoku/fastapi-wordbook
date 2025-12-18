@@ -8,19 +8,18 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 
 
-DATABASE_URL = "sqlite:///./wordbook.db"
-# use SQLite
-# store the file in the current directory as wordbook.db
+DATABASE_URL = "postgresql+psycopg2://wordbook_user:Gone4Moon@localhost:5432/wordbook"
+# use Postgres
 
 
-engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
-)
+
+engine = create_engine(DATABASE_URL)
+
 # -What is the engine?-
 # The engine is the core connection object.
 # SQLAlchemy uses it to open connections, execute queries, and talk to the DB.
 
-# -Why check_same_thread=False?-
+# -Why check_same_thread=False?- (Only for SQLite)
 # SQLite has a restriction:
 # it doesn’t like being accessed from different threads.
 

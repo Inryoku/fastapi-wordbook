@@ -32,3 +32,5 @@ class Word(Base):
         # Stores the timestamp when the row is created
         # Automatically filled by the database using NOW()
         # This means you don’t need to manually set it when inserting a word.
+    part_of_speech = Column(String, nullable=True)
+        # add for Alembic migration
