@@ -10,6 +10,22 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 
 
+def load_env_file(path: str) -> None:
+    if not os.path.exists(path):
+        return
+    with open(path, "r", encoding="utf-8") as env_file:
+        for line in env_file:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            os.environ.setdefault(key, value)
+
+
+load_env_file(os.path.join(os.path.dirname(__file__), ".env"))
+
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "postgresql+psycopg2://wordbook_user@localhost:5432/wordbook",
@@ -46,5 +62,4 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 # Create a base class for "ORM models (tables)".
 # when a class inherits from this, this "Base" class observes and registers it.
-
 
