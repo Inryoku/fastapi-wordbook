@@ -1,5 +1,7 @@
 # Database setup using SQLAlchemy
 
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 # create_engine → creates the connection to the database
@@ -8,7 +10,10 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 
 
-DATABASE_URL = "postgresql+psycopg2://wordbook_user:Gone4Moon@localhost:5432/wordbook"
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql+psycopg2://wordbook_user@localhost:5432/wordbook",
+)
 # use Postgres
 
 
@@ -41,6 +46,5 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 # Create a base class for "ORM models (tables)".
 # when a class inherits from this, this "Base" class observes and registers it.
-
 
 
