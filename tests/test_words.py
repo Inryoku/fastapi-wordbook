@@ -24,15 +24,17 @@ def override_get_db():
         db.close()
 
 
-# Override the dependency in the app to use the test database.
+# when main.get_db is called, override_get_db will be called instead
 main.app.dependency_overrides[main.get_db] = override_get_db
 
 # Create tables once; they will be recreated per test by the autouse fixture below.
 Base.metadata.create_all(bind=test_engine)
 
+# fake http client for testing, as if someone is sending requests to the FastAPI app
 client = TestClient(main.app)
 
 
+# when each test function is run, this will run automatically.
 @pytest.fixture(autouse=True)
 def reset_db():
     Base.metadata.drop_all(bind=test_engine)
@@ -47,14 +49,20 @@ def test_create_and_read_word():
         "part_of_speech": "noun",
     }
 
+    # store the created word's response for further checks
     create_resp = client.post("/words", json=payload)
+    # check if the response succeeded
     assert create_resp.status_code == 200
+    # change the response python data
     created = create_resp.json()
+    # check if the created word matches the payload
     assert created["term"] == payload["term"]
     assert created["meaning"] == payload["meaning"]
     assert created["example"] == payload["example"]
     assert created["part_of_speech"] == payload["part_of_speech"]
+    # check if an ID is created in the server side
     assert isinstance(created["id"], int)
+
 
     list_resp = client.get("/words")
     assert list_resp.status_code == 200
