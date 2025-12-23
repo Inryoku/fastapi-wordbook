@@ -33,8 +33,11 @@ DATABASE_URL = os.getenv(
 # use Postgres
 
 
+connect_args = {}
+if DATABASE_URL.startswith("sqlite"):
+    connect_args = {"check_same_thread": False}
 
-engine = create_engine(DATABASE_URL)
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
 
 # -What is the engine?-
 # The engine is the core connection object.
