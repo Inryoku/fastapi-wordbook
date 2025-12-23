@@ -4,6 +4,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
+import sys
+from pathlib import Path
+
+# Ensure project root is on sys.path for CI
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+
+
 import main
 from database import Base
 
